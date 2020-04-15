@@ -1,0 +1,31 @@
+{
+  "name": "covid19-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DhanalakshmiNarala/Covid19-Info.git"
+  },
+  "author": "Dhanalakshmi N",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DhanalakshmiNarala/Covid19-Info/issues"
+  },
+  "homepage": "https://github.com/DhanalakshmiNarala/Covid19-Info#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "loglevel": "^1.6.8",
+    "morgan": "^1.10.0",
+    "sequelize": "^5.21.6"
+  },
+  "devDependencies": {
+    "jest": "^25.3.0",
+    "nodemon": "^2.0.3"
+  }
+}
