@@ -11,63 +11,70 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: false
+      autoIncrement: true
     },
-    country_id: {
-      type: DataTypes.INTEGER,
+    user_name: {
+      type: DataTypes.CHAR(50),
       allowNull: false,
       defaultValue: null,
       comment: null,
       primaryKey: false,
-      field: "country_id",
+      field: "user_name",
       autoIncrement: false,
-      references: {
-        key: "id",
-        model: "countries_model"
-      }
+      unique: "unique_user_name"
     },
-    date: {
-      type: DataTypes.DATEONLY,
+    password: {
+      type: DataTypes.CHAR(50),
       allowNull: false,
       defaultValue: null,
       comment: null,
       primaryKey: false,
-      field: "date",
+      field: "password",
       autoIncrement: false
     },
-    confirmed_cases: {
-      type: DataTypes.INTEGER,
+    name: {
+      type: DataTypes.CHAR(50),
       allowNull: false,
       defaultValue: null,
       comment: null,
       primaryKey: false,
-      field: "confirmed_cases",
+      field: "name",
       autoIncrement: false
     },
-    recovered_cases: {
-      type: DataTypes.INTEGER,
+    email: {
+      type: DataTypes.CHAR(50),
       allowNull: false,
       defaultValue: null,
       comment: null,
       primaryKey: false,
-      field: "recovered_cases",
+      field: "email",
+      autoIncrement: false,
+      unique: "unique_user_email"
+    },
+    address: {
+      type: DataTypes.CHAR(50),
+      allowNull: false,
+      defaultValue: null,
+      comment: null,
+      primaryKey: false,
+      field: "address",
       autoIncrement: false
     },
-    died_cases: {
-      type: DataTypes.INTEGER,
+    is_admin: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: null,
       comment: null,
       primaryKey: false,
-      field: "died_cases",
+      field: "is_admin",
       autoIncrement: false
     }
   };
   const options = {
-    tableName: "covid_info",
+    tableName: "users",
     comment: "",
     indexes: []
   };
-  const CovidInfoModel = sequelize.define("covid_info_model", attributes, options);
-  return CovidInfoModel;
+  const UsersModel = sequelize.define("users_model", attributes, options);
+  return UsersModel;
 };
