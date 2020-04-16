@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="covid_info" author="dhanalakshmi">
+        <createTable tableName="covid_info">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirmed_cases" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recovered_cases" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="died_cases" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="covid_info"
+            constraintName="country_id_fk" referencedColumnNames="id" referencedTableName="countries"/>
+    </changeSet>
+</databaseChangeLog>
