@@ -1,6 +1,3 @@
-// const { resolve } = require('path');
-// require('dotenv').config({ path: resolve(__dirname, '../../config/dev.env') });
-
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
@@ -14,8 +11,4 @@ const sequelize = new Sequelize(
   }
 );
 
-const User = UserModel(sequelize);
-
-sequelize.sync({ force: true }).then(() => {
-  console.log('Database tables created');
-});
+module.exports = sequelize;
