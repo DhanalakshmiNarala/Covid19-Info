@@ -1,3 +1,6 @@
+const { resolve } = require('path');
+require('dotenv').config({ path: resolve(__dirname, '../../config/dev.env') });
+
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
