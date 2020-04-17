@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 
+const userRoutes = require('./routes/user');
+
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -18,6 +20,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use('/signUp', userRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({
