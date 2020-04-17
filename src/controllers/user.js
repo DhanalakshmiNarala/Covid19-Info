@@ -27,7 +27,7 @@ const addUser = async (req, res, next) => {
     } else {
       return failureResponse(res, {
         status: 400,
-        message: 'password and confirm password are not equal',
+        message: 'Password and confirm password are not equal',
       });
     }
   } catch (error) {
