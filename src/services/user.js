@@ -8,4 +8,8 @@ const insertUserInDB = async (params) => {
   return UsersModel.create(params, { raw: true });
 };
 
-module.exports = { insertUserInDB };
+const getUserFromDB = async (params) => {
+  return UsersModel.findOne({ where: params });
+};
+
+module.exports = { insertUserInDB, getUserFromDB };
