@@ -24,7 +24,7 @@ module.exports = sequelize => {
       unique: "unique_user_name"
     },
     password: {
-      type: DataTypes.CHAR(50),
+      type: DataTypes.CHAR(150),
       allowNull: false,
       defaultValue: null,
       comment: null,

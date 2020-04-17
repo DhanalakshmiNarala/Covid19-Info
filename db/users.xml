@@ -13,7 +13,7 @@
             <column name="user_name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="varchar(50)">
+            <column name="password" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(50)">
