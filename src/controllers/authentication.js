@@ -83,4 +83,30 @@ const logout = async (req, res, next) => {
   });
 };
 
-module.exports = { login, getNewAccessToken, logout };
+//Authentication
+const authorize = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const accessToken = authHeader && authHeader.split(' ')[1];
+  if (!accessToken) {
+    return failureResponse(res, {
+      status: 401,
+      message: 'Access token is required',
+    });
+  }
+  jwt.verify(
+    accessToken,
+    process.env.ACCESS_TOKEN_SECRET,
+    (error, userInfo) => {
+      if (error) {
+        return failureResponse(res, {
+          status: 403,
+          message: 'Unauthorized',
+        });
+      }
+      req.userInfo = userInfo;
+    }
+  );
+  next();
+};
+
+module.exports = { login, getNewAccessToken, logout, authorize };
