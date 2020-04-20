@@ -11,7 +11,7 @@ module.exports = sequelize => {
       comment: null,
       primaryKey: true,
       field: "id",
-      autoIncrement: false
+      autoIncrement: true
     },
     country_id: {
       type: DataTypes.INTEGER,
