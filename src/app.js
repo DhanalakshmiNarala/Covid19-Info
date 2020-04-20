@@ -4,8 +4,8 @@ const morgan = require('morgan');
 
 const userRoutes = require('./routes/user');
 const authenticationRoutes = require('./routes/authentication');
-
 const { authorize } = require('./controllers/authentication');
+const adminRoutes = require('./routes/admin');
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -28,6 +28,8 @@ app.use('/signUp', userRoutes);
 app.use('/auth', authenticationRoutes);
 
 app.use(authorize);
+
+app.use('/admin', adminRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({
