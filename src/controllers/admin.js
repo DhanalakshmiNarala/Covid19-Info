@@ -5,6 +5,12 @@ const { insertCovidInfoInDB } = require('../services/covidInfo');
 
 const uploadData = async (req, res, next) => {
   try {
+    if (!req.userInfo.isAdmin) {
+      return failureResponse(res, {
+        status: 403,
+        message: 'Your not an Admin',
+      });
+    }
     const files = req.files;
     if (!files) {
       return failureResponse(res, {

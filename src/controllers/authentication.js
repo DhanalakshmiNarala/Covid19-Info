@@ -22,6 +22,7 @@ const login = async (req, res, next) => {
       const userInfo = {
         id: dbUser.id,
         name: dbUser.name,
+        isAdmin: dbUser.is_admin,
       };
       const accessToken = generateJWTAccessToken(userInfo);
       const refreshToken = generateJWTRefreshToken(userInfo);
@@ -64,6 +65,7 @@ const getNewAccessToken = async (req, res, next) => {
       const accessToken = generateJWTAccessToken({
         id: userInfo.id,
         name: userInfo.name,
+        isAdmin: userInfo.isAdmin,
       });
       return successResponse(res, {
         status: 200,
