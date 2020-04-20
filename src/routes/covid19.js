@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/totalConfirmedCases', (req, res, next) => {
-  res.send('totalConfirmedCases working');
-});
+const {
+  totalConfirmedCases,
+  totalRecoveredCases,
+  totalDeaths,
+} = require('../controllers/covid19');
 
-router.post('/totalRecoveredCases', (req, res, next) => {
-  res.send('totalRecoveredCases working');
-});
+router.post('/totalConfirmedCases', totalConfirmedCases);
 
-router.post('/totalDeaths', (req, res, next) => {
-  res.send('totalDeaths working');
-});
+router.post('/totalRecoveredCases', totalRecoveredCases);
+
+router.post('/totalDeaths', totalDeaths);
 
 module.exports = router;
