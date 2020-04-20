@@ -66,7 +66,11 @@ module.exports = sequelize => {
   const options = {
     tableName: "covid_info",
     comment: "",
-    indexes: []
+    indexes: [{
+      name: "unique_record_for_date",
+      unique: true,
+      fields: ["country_id", "date"]
+    }]
   };
   const CovidInfoModel = sequelize.define("covid_info_model", attributes, options);
   return CovidInfoModel;
