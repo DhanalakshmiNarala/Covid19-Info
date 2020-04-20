@@ -28,7 +28,7 @@ describe('/signUp', () => {
   });
 
   it('should signUp for user1', async () => {
-    const res = await request(app).post('/signUp').send(users[0]);
+    const res = await request(app.listen()).post('/signUp').send(users[0]);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       status: 'Success',
@@ -37,7 +37,7 @@ describe('/signUp', () => {
   });
 
   it('should signUp for user2', async () => {
-    const res = await request(app).post('/signUp').send(users[1]);
+    const res = await request(app.listen()).post('/signUp').send(users[1]);
     expect(res.status).toBe(400);
     expect(res.body).toEqual({
       status: 'Failure',
