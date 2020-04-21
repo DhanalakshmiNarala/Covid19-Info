@@ -4,9 +4,10 @@
   "description": "",
   "main": "",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "NODE_ENV='production' nodemon src/server.js",
+    "dev": "NODE_ENV='development' nodemon src/server.js",
     "automate": "sequelize-automate -c sequelize-automate.config.js",
-    "test": "jest --testTimeout=10000 --watchAll"
+    "test": "NODE_ENV='testing' jest --testTimeout=10000 --watchAll"
   },
   "repository": {
     "type": "git",
