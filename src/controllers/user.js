@@ -9,8 +9,7 @@ const addUser = async (req, res, next) => {
       confirm_password: req.body.confirm_password,
       name: req.body.name,
       email: req.body.email,
-      address: req.body.address,
-      is_admin: false,
+      is_admin: req.body.is_admin || false, // fixme: req.is_admin should'nt be allowed
     };
     if (user.password === user.confirm_password) {
       const userRecord = await insertUserInDB(user);

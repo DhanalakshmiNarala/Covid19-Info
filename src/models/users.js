@@ -51,15 +51,6 @@ module.exports = sequelize => {
       autoIncrement: false,
       unique: "unique_user_email"
     },
-    address: {
-      type: DataTypes.CHAR(50),
-      allowNull: false,
-      defaultValue: null,
-      comment: null,
-      primaryKey: false,
-      field: "address",
-      autoIncrement: false
-    },
     is_admin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
