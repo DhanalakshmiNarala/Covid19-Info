@@ -81,7 +81,9 @@ const countryWiseConfirmedCases = async (req, res, next) => {
       return {
         country: record['countries_model.name'],
         count: record.confirmed_cases,
-      };
+      }.sort((record1, record2) => {
+        return record1.confirmed_cases - record2.confirmed_cases;
+      });
     });
 
     return successResponse(res, {
@@ -105,7 +107,9 @@ const countryWiseRecoveredCases = async (req, res, next) => {
       return {
         country: record['countries_model.name'],
         count: record.recovered_cases,
-      };
+      }.sort((record1, record2) => {
+        return record1.recovered_cases - record2.recovered_cases;
+      });
     });
     return successResponse(res, {
       status: 200,
@@ -128,7 +132,9 @@ const countryWiseDiedCases = async (req, res, next) => {
       return {
         country: record['countries_model.name'],
         count: record.died_cases,
-      };
+      }.sort((record1, record2) => {
+        return record1.died_cases - record2.died_cases;
+      });
     });
     return successResponse(res, {
       status: 200,
