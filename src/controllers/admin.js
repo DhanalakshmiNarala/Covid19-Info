@@ -5,23 +5,10 @@ const { insertCovidInfoInDB } = require('../services/covidInfo');
 
 const uploadData = async (req, res, next) => {
   try {
-    if (!req.userInfo.isAdmin) {
-      return failureResponse(res, {
-        status: 403,
-        message: 'Your not an Admin',
-      });
-    }
-    const files = req.files;
-    if (!files) {
-      return failureResponse(res, {
-        status: 400,
-        message: 'Please upload files',
-      });
-    }
-    await processInputFiles(files);
+    await processInputFiles(req.files);
     return successResponse(res, {
       status: 200,
-      message: 'files uploded successfully',
+      message: 'Files uploded successfully',
     });
   } catch (error) {
     return failureResponse(res, {
@@ -33,12 +20,12 @@ const uploadData = async (req, res, next) => {
 
 const processInputFiles = async (files) => {
   const confirmedCasesInfo = await csvtojson().fromFile(files[0].path);
-  const deathCasesInfo = await csvtojson().fromFile(files[1].path);
+  const diedCasesInfo = await csvtojson().fromFile(files[1].path);
   const recoveredCasesInfo = await csvtojson().fromFile(files[2].path);
 
   let countryWiseCases = {};
   fillCovidCasesCount(confirmedCasesInfo, countryWiseCases, 'confirmed');
-  fillCovidCasesCount(deathCasesInfo, countryWiseCases, 'deaths');
+  fillCovidCasesCount(diedCasesInfo, countryWiseCases, 'deaths');
   fillCovidCasesCount(recoveredCasesInfo, countryWiseCases, 'recovered');
 
   const promises = Object.keys(countryWiseCases).map(async (country) => {
