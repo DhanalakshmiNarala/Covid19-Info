@@ -2,15 +2,20 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  totalConfirmedCases,
-  totalRecoveredCases,
-  totalDeaths,
+  worldWideConfirmedCases,
+  worldWideRecoveredCases,
+  worldWideDiedCases,
+  countryWiseConfirmedCases,
+  countryWiseRecoveredCases,
+  countryWiseDiedCases,
 } = require('../controllers/covid19');
 
-router.post('/totalConfirmedCases', totalConfirmedCases);
+router.post('/worldWideConfirmedCases', worldWideConfirmedCases);
+router.post('/worldWideRecoveredCases', worldWideRecoveredCases);
+router.post('/worldWideDiedCases', worldWideDiedCases);
 
-router.post('/totalRecoveredCases', totalRecoveredCases);
-
-router.post('/totalDeaths', totalDeaths);
+router.post('/countryWiseConfirmedCases', countryWiseConfirmedCases);
+router.post('/countryWiseRecoveredCases', countryWiseRecoveredCases);
+router.post('/countryWiseDiedCases', countryWiseDiedCases);
 
 module.exports = router;

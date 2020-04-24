@@ -29,21 +29,6 @@ const getCovidInfoFromDB = async (params) => {
       },
     ],
   });
-
-  // await CompanyEmployeesModel.belongsTo(EmployeeModel, {
-  //   foreignKey: 'employee_id',
-  // });
-  // return await CompanyEmployeesModel.findAll({
-  //   raw: true,
-  //   attributes: [],
-  //   where: { company_id: companyInfo.id },
-  //   include: [
-  //     {
-  //       model: EmployeeModel,
-  //       attributes: ['emp_id', 'name', 'email', 'address', 'phone_no'],
-  //     },
-  //   ],
-  // });
 };
 
 module.exports = { insertCovidInfoInDB, getCovidInfoFromDB };
