@@ -15,7 +15,6 @@ It gives the latest information about the covid19 cases.
     - password - Varchar(50)
     - name - Varchar(50)
     - email - Varchar(50)
-    - address - Varchar(50)
     - is_admin - Boolean
 
       Here the password field contains the user's encrypted password.
@@ -24,6 +23,8 @@ It gives the latest information about the covid19 cases.
 
     - id (primary key) - Serial
     - name (unique) - Varchar(50)
+    - latitude - Integer
+    - longitude - Integer
 
       The purpose of this table is to avoid redundent country_names in covid_info table.
 
@@ -51,14 +52,13 @@ It gives the latest information about the covid19 cases.
   - confirm password
   - name
   - email
-  - address
 
   **_output:_**
 
   - If registration success: 'User successfully registered' message.
   - If any error occured: 'User registration failed' message.
 
-- **/signIn** (POST)
+- **/auth/login** (POST)
 
   Using this route the user will get signIn with his user_name and password.
 
@@ -78,7 +78,15 @@ It gives the latest information about the covid19 cases.
     ```
   - or else Error message
 
-- **/getNewAccessToken** (POST)
+- **/auth/logout** (DELETE)
+
+  Using this route the user can logout
+
+  **_params_:** Not required
+
+  **_output_:** None
+
+- **/auth/getNewAccessToken** (POST)
 
   **params:**
 
@@ -94,7 +102,7 @@ It gives the latest information about the covid19 cases.
   }
   ```
 
-- **/uploadData** (POST)
+- **/admin/uploadData** (POST)
 
   **_params_**: (Using postman form-data option we can upload csv file as key - value pair).
 
@@ -104,7 +112,7 @@ It gives the latest information about the covid19 cases.
 
   **_output:_** If files successfully uploaded then 'Successfully submitted' message or error message.
 
-* **/totalPositiveCases** (GET)
+- **/covid19/worldWideConfirmedCases** (GET)
 
   **_params:_** Not required
 
@@ -112,15 +120,12 @@ It gives the latest information about the covid19 cases.
 
   ```
   {
-     totalWorldWide: count,
-     countryWise: {
-        country_name: count
-        ...
-     }
+    message: 'COVID-19 world wide confirmed cases',
+    totalWorldWide: Integer
   }
   ```
 
-- /**totalRecoveredCases** (GET)
+- **/covid19/worldWideRecoveredCases** (GET)
 
   **_params:_** Not required
 
@@ -128,15 +133,12 @@ It gives the latest information about the covid19 cases.
 
   ```
   {
-     totalWorldWide: count,
-     countryWise: {
-        country_name: count
-        ...
-     }
+    message: 'COVID-19 world wide recovered cases',
+    totalWorldWide: Integer
   }
   ```
 
-* **/totalDeaths** (GET)
+- **/covid19/worldWideDiedCases** (GET)
 
   **_params:_** Not required
 
@@ -144,11 +146,113 @@ It gives the latest information about the covid19 cases.
 
   ```
   {
-        totalWorldWide: count,
-        countryWise: {
-           country_name: count,
-           ...
-        }
+    message: 'COVID-19 world wide died cases',
+    totalWorldWide: Integer
+  }
+  ```
+
+- **/covid19/countryWiseConfirmedCases** (GET)
+
+  **_params:_** Not required
+
+  **_output:_**
+
+  ```
+  {
+    message: 'COVID-19 country wise confirmed cases',
+    countryWiseCases: {
+      country: String,
+      count: Integer
+    }
+  }
+  ```
+
+- **/covid19/countryWiseRecoveredCase** (GET)
+
+  **_params_** Not required
+
+  **_output:_**
+
+  ```
+  {
+    message: 'COVID-19 country wise recovered cases',
+    countryWiseCases: {
+      country: String,
+      count: Integer
+    }
+  }
+
+  ```
+
+- **/covid19/countryWiseDiedCases** (GET)
+
+  **_params_** Not required
+
+  **_output_**
+
+  ```
+  {
+    message: 'COVID-19 country wise died cases',
+    countryWiseCases: {
+      country: String,
+      count: Integer
+    }
+  }
+
+  ```
+
+- **/covid19/geographic/countryWiseConfirmedCases** (GET)
+
+  **_params_** Not required
+
+  **_output_**
+
+  ```
+  {
+    message: 'COVID-19 country wise confirmed cases',
+    countryWiseCases: {
+      country: String,
+      latitude: Integer,
+      longitude: Integer,
+      count: Integer
+    }
+  }
+
+  ```
+
+- **/covid19/geographic/countryWiseRecoveredCases** (GET)
+
+  **_params_** Not required
+
+  **_output_**
+
+  ```
+  {
+    message: 'COVID-19 country wise recovered cases',
+    countryWiseCases: {
+      country: String,
+      latitude: Integer,
+      longitude: Integer,
+      count: Integer
+    }
+  }
+  ```
+
+- **/covid19/geographic/countryWiseDiedCases** (GET)
+
+  **_params_** Not required
+
+  **_output_**
+
+  ```
+  {
+    message: 'COVID-19 country wise died cases',
+    countryWiseCases: {
+      country: String,
+      latitude: Integer,
+      longitude: Integer,
+      count: Integer
+    }
   }
   ```
 
@@ -157,13 +261,14 @@ It gives the latest information about the covid19 cases.
 - express
 - morgon
 - dotenv
-- loglevel
 - sequelize
 - bcrypt - for encrypting user passwords
 - jsonwebtoken - for jwt tokens
 - multer - for handling file uploads
-- csv-fast - for parsing csv files
+- csvtojson - for parsing csv files
 - jest (dev)
+- sequelize-mock(dev)
+- supertest
 - nodemon (dev)
 
 **Architecture and working**
