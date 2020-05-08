@@ -224,3 +224,19 @@ It gives the latest information about the covid19 cases.
 3. I will assign some users as admin manually in database by changing isAdmin field.
 4. Using /uploadData api the admin will upload .csv files. The .csv files will be processed using **_multer_** and **_csvtojson_** node modules and the update the covid-info database table using sequelize.
 5. /totalCofirmedCases, /totalRecoveredCases, /totalDeaths will be filled by processing covid-info database table through sequelize.
+
+### configuration files:
+
+- **/config/dev.env**
+
+```
+  DB_TYPE=xxxx
+  DB_NAME=xxxx
+  DB_PORT=xxxx
+  DB_USERNAME=xxxx
+  DB_PASSWORD=xxxx
+  SERVER_PORT=xxxx
+  HOST=xxxx
+  ACCESS_TOKEN_SECRET=xxxx
+  REFRESH_TOKEN_SECRET=xxxx
+```
