@@ -198,62 +198,6 @@ It gives the latest information about the covid19 cases.
       count: Integer
     }
   }
-
-  ```
-
-- **/covid19/geographic/countryWiseConfirmedCases** (GET)
-
-  **_params_** Not required
-
-  **_output_**
-
-  ```
-  {
-    message: 'COVID-19 country wise confirmed cases',
-    countryWiseCases: {
-      country: String,
-      latitude: Integer,
-      longitude: Integer,
-      count: Integer
-    }
-  }
-
-  ```
-
-- **/covid19/geographic/countryWiseRecoveredCases** (GET)
-
-  **_params_** Not required
-
-  **_output_**
-
-  ```
-  {
-    message: 'COVID-19 country wise recovered cases',
-    countryWiseCases: {
-      country: String,
-      latitude: Integer,
-      longitude: Integer,
-      count: Integer
-    }
-  }
-  ```
-
-- **/covid19/geographic/countryWiseDiedCases** (GET)
-
-  **_params_** Not required
-
-  **_output_**
-
-  ```
-  {
-    message: 'COVID-19 country wise died cases',
-    countryWiseCases: {
-      country: String,
-      latitude: Integer,
-      longitude: Integer,
-      count: Integer
-    }
-  }
   ```
 
 **List of packages used:**
@@ -266,15 +210,17 @@ It gives the latest information about the covid19 cases.
 - jsonwebtoken - for jwt tokens
 - multer - for handling file uploads
 - csvtojson - for parsing csv files
-- jest (dev)
-- sequelize-mock(dev)
-- supertest
-- nodemon (dev)
+
+* Dev dependencies:
+  - jest
+  - sequelize-mock
+  - supertest
+  - nodemon
 
 **Architecture and working**
 
 1. User will get registered through /signUp
 2. After signUp the user will signIn through /signIn
 3. I will assign some users as admin manually in database by changing isAdmin field.
-4. Using /uploadData api the admin will upload .csv files. The .csv files will be processed using **_multer_** and **_fast-csv_** node modules and the update the covid-info database table using sequelize.
+4. Using /uploadData api the admin will upload .csv files. The .csv files will be processed using **_multer_** and **_csvtojson_** node modules and the update the covid-info database table using sequelize.
 5. /totalCofirmedCases, /totalRecoveredCases, /totalDeaths will be filled by processing covid-info database table through sequelize.
