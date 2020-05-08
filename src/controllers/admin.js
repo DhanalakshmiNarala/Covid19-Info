@@ -3,7 +3,17 @@ const csvtojson = require("csvtojson");
 const { successResponse, failureResponse } = require("../utils/response");
 const { insertCovidInfoInDB } = require("../services/covidInfo");
 
-const uploadData = async (req, res, next) => {
+const isAdmin = (req, res, next) => {
+  if (!req.userInfo || !req.userInfo.isAdmin) {
+    return failureResponse(res, {
+      status: 403,
+      message: "Admins can only upload files",
+    });
+  }
+  next();
+};
+
+const handleUploadedFiles = async (req, res, next) => {
   try {
     await processInputFiles(req.files);
     return successResponse(res, {
@@ -20,43 +30,15 @@ const uploadData = async (req, res, next) => {
 };
 
 const processInputFiles = async (files) => {
-  try {
-    const confirmedCasesInfo = await csvtojson().fromFile(files[0].path);
-    const recoveredCasesInfo = await csvtojson().fromFile(files[1].path);
-    const diedCasesInfo = await csvtojson().fromFile(files[2].path);
+  const confirmedCasesInfo = await csvtojson().fromFile(files[0].path);
+  const recoveredCasesInfo = await csvtojson().fromFile(files[1].path);
+  const diedCasesInfo = await csvtojson().fromFile(files[2].path);
 
-    let countryWiseCases = {};
-    fillCovidCasesCount(confirmedCasesInfo, countryWiseCases, "confirmed");
-    fillCovidCasesCount(diedCasesInfo, countryWiseCases, "deaths");
-    fillCovidCasesCount(recoveredCasesInfo, countryWiseCases, "recovered");
-
-    let lastUpdatedDateStr;
-    const promises = Object.keys(countryWiseCases).map(async (country) => {
-      const countryInfo = countryWiseCases[country];
-      if (!lastUpdatedDateStr) {
-        const dates = Object.keys(countryInfo);
-        const lastUpdatedDate = new Date(
-          Math.max.apply(
-            null,
-            dates.map((date) => new Date(date))
-          )
-        );
-        lastUpdatedDateStr = dates.find(
-          (date) => new Date(date).getTime() === lastUpdatedDate.getTime()
-        );
-      }
-
-      return insertCovidInfoInDB({
-        country,
-        date: lastUpdatedDateStr,
-        ...countryInfo[lastUpdatedDateStr],
-      });
-    });
-    return Promise.all(promises);
-  } catch (error) {
-    console.log("--------------------- files processing error ------");
-    console.log(error);
-  }
+  let countryWiseCases = {};
+  fillCovidCasesCount(confirmedCasesInfo, countryWiseCases, "confirmed");
+  fillCovidCasesCount(diedCasesInfo, countryWiseCases, "deaths");
+  fillCovidCasesCount(recoveredCasesInfo, countryWiseCases, "recovered");
+  insertCountryWiseCasesInDB(countryWiseCases);
 };
 
 const fillCovidCasesCount = (casesInfo, countryWiseCases, caseType) => {
@@ -86,4 +68,32 @@ const fillCovidCasesCount = (casesInfo, countryWiseCases, caseType) => {
   });
 };
 
-module.exports = { uploadData };
+const insertCountryWiseCasesInDB = (countryWiseCases) => {
+  let lastUpdatedDateStr;
+  const promises = Object.keys(countryWiseCases).map(async (country) => {
+    const countryInfo = countryWiseCases[country];
+    if (!lastUpdatedDateStr) {
+      lastUpdatedDateStr = getLastUpdatedDate(Object.keys(countryInfo));
+    }
+    return insertCovidInfoInDB({
+      country,
+      date: lastUpdatedDateStr,
+      ...countryInfo[lastUpdatedDateStr],
+    });
+  });
+  return Promise.all(promises);
+};
+
+const getLastUpdatedDate = (dates) => {
+  const lastUpdatedDate = new Date(
+    Math.max.apply(
+      null,
+      dates.map((date) => new Date(date))
+    )
+  );
+  return dates.find(
+    (date) => new Date(date).getTime() === lastUpdatedDate.getTime()
+  );
+};
+
+module.exports = { isAdmin, handleUploadedFiles };
