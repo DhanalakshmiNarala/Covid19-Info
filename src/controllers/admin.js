@@ -1,16 +1,17 @@
-const csvtojson = require('csvtojson');
+const csvtojson = require("csvtojson");
 
-const { successResponse, failureResponse } = require('../utils/response');
-const { insertCovidInfoInDB } = require('../services/covidInfo');
+const { successResponse, failureResponse } = require("../utils/response");
+const { insertCovidInfoInDB } = require("../services/covidInfo");
 
 const uploadData = async (req, res, next) => {
   try {
     await processInputFiles(req.files);
     return successResponse(res, {
       status: 200,
-      message: 'Files uploded successfully',
+      message: "Files uploded successfully",
     });
   } catch (error) {
+    console.log(error);
     return failureResponse(res, {
       status: 500,
       message: error.message,
@@ -19,34 +20,49 @@ const uploadData = async (req, res, next) => {
 };
 
 const processInputFiles = async (files) => {
-  const confirmedCasesInfo = await csvtojson().fromFile(files[0].path);
-  const diedCasesInfo = await csvtojson().fromFile(files[1].path);
-  const recoveredCasesInfo = await csvtojson().fromFile(files[2].path);
+  try {
+    const confirmedCasesInfo = await csvtojson().fromFile(files[0].path);
+    const recoveredCasesInfo = await csvtojson().fromFile(files[1].path);
+    const diedCasesInfo = await csvtojson().fromFile(files[2].path);
 
-  let countryWiseCases = {};
-  fillCovidCasesCount(confirmedCasesInfo, countryWiseCases, 'confirmed');
-  fillCovidCasesCount(diedCasesInfo, countryWiseCases, 'deaths');
-  fillCovidCasesCount(recoveredCasesInfo, countryWiseCases, 'recovered');
+    let countryWiseCases = {};
+    fillCovidCasesCount(confirmedCasesInfo, countryWiseCases, "confirmed");
+    fillCovidCasesCount(diedCasesInfo, countryWiseCases, "deaths");
+    fillCovidCasesCount(recoveredCasesInfo, countryWiseCases, "recovered");
 
-  const promises = Object.keys(countryWiseCases).map(async (country) => {
-    const countryInfo = countryWiseCases[country];
-    return Promise.all(
-      Object.keys(countryInfo).map(async (date) => {
-        await insertCovidInfoInDB({
-          country,
-          date,
-          ...countryInfo[date],
-        });
-      })
-    );
-  });
-  return Promise.all(promises);
+    let lastUpdatedDateStr;
+    const promises = Object.keys(countryWiseCases).map(async (country) => {
+      const countryInfo = countryWiseCases[country];
+      if (!lastUpdatedDateStr) {
+        const dates = Object.keys(countryInfo);
+        const lastUpdatedDate = new Date(
+          Math.max.apply(
+            null,
+            dates.map((date) => new Date(date))
+          )
+        );
+        lastUpdatedDateStr = dates.find(
+          (date) => new Date(date).getTime() === lastUpdatedDate.getTime()
+        );
+      }
+
+      return insertCovidInfoInDB({
+        country,
+        date: lastUpdatedDateStr,
+        ...countryInfo[lastUpdatedDateStr],
+      });
+    });
+    return Promise.all(promises);
+  } catch (error) {
+    console.log("--------------------- files processing error ------");
+    console.log(error);
+  }
 };
 
 const fillCovidCasesCount = (casesInfo, countryWiseCases, caseType) => {
   const dateRegex = /^\d{1,2}\/\d{1,2}\/\d*$/;
   casesInfo.forEach((record) => {
-    const country = record['Country/Region'];
+    const country = record["Country/Region"];
     if (!countryWiseCases[country]) {
       countryWiseCases[country] = {};
     }

@@ -96,16 +96,18 @@ const worldWideDiedCases = async (req, res, next) => {
 
 const countryWiseConfirmedCases = async (req, res, next) => {
   try {
-    const todayDate = new Date().getDate();
-    const info = await getCovidInfoFromDB({ date: todayDate });
-    const countryWiseCount = info.map((record) => {
-      return {
-        country: record["countries_model.name"],
-        count: record.confirmed_cases,
-      }.sort((record1, record2) => {
-        return record1.confirmed_cases - record2.confirmed_cases;
+    const lastUpdatedDate = await getLastUpdatedDate();
+    const info = await getCovidInfoFromDB({ date: lastUpdatedDate });
+    const countryWiseCount = info
+      .map((record) => {
+        return {
+          country: record["countries_model.name"],
+          count: record.confirmed_cases,
+        };
+      })
+      .sort((record1, record2) => {
+        return record2.count - record1.count;
       });
-    });
 
     return successResponse(res, {
       status: 200,
@@ -122,16 +124,18 @@ const countryWiseConfirmedCases = async (req, res, next) => {
 
 const countryWiseRecoveredCases = async (req, res, next) => {
   try {
-    const todayDate = new Date().getDate();
-    const info = await getCovidInfoFromDB({ date: todayDate });
-    const countryWiseCount = info.map((record) => {
-      return {
-        country: record["countries_model.name"],
-        count: record.recovered_cases,
-      }.sort((record1, record2) => {
-        return record1.recovered_cases - record2.recovered_cases;
+    const lastUpdatedDate = await getLastUpdatedDate();
+    const info = await getCovidInfoFromDB({ date: lastUpdatedDate });
+    const countryWiseCount = info
+      .map((record) => {
+        return {
+          country: record["countries_model.name"],
+          count: record.recovered_cases,
+        };
+      })
+      .sort((record1, record2) => {
+        return record2.count - record1.count;
       });
-    });
     return successResponse(res, {
       status: 200,
       message: "Country wise recovered cases",
@@ -147,16 +151,18 @@ const countryWiseRecoveredCases = async (req, res, next) => {
 
 const countryWiseDiedCases = async (req, res, next) => {
   try {
-    const todayDate = new Date().getDate();
-    const info = await getCovidInfoFromDB({ date: todayDate });
-    const countryWiseCount = info.map((record) => {
-      return {
-        country: record["countries_model.name"],
-        count: record.died_cases,
-      }.sort((record1, record2) => {
-        return record1.died_cases - record2.died_cases;
+    const lastUpdatedDate = await getLastUpdatedDate();
+    const info = await getCovidInfoFromDB({ date: lastUpdatedDate });
+    const countryWiseCount = info
+      .map((record) => {
+        return {
+          country: record["countries_model.name"],
+          count: record.died_cases,
+        };
+      })
+      .sort((record1, record2) => {
+        return record2.count - record1.count;
       });
-    });
     return successResponse(res, {
       status: 200,
       message: "Country wise died cases",
