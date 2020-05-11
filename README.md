@@ -112,6 +112,19 @@ It gives the latest information about the covid19 cases.
 
   **_output:_** If files successfully uploaded then 'Successfully submitted' message or error message.
 
+- **/covid19/lastUpdatedDate** (GET)
+
+  **_params:_** Not required
+
+  **_output:_**
+
+  ```
+  {
+    message: 'Covid19 information last updated date',
+    lastUpdatedDate: Date
+  }
+  ```
+
 - **/covid19/worldWideConfirmedCases** (GET)
 
   **_params:_** Not required
